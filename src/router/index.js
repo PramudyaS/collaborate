@@ -27,11 +27,11 @@ const routes = [
     children: [
       {
         path: "",
-        component:Home
+        component: Home
       },
       {
-        path:"/dashboard",
-        component:Dashboard
+        path: "/dashboard",
+        component: Dashboard
       }
     ]
   },
@@ -45,8 +45,8 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
-    path:"*",
-    component:NotFound
+    path: "*",
+    component: NotFound
   }
 ];
 

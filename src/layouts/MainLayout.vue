@@ -8,13 +8,12 @@
 </template>
 
 <script>
-  import NavbarComponent from "@/components/master/partials/NavbarComponent.vue";
+import NavbarComponent from "@/components/master/partials/NavbarComponent.vue";
 
-  export default
-  {
-    name:"MainLayout",
-    components:{
-      NavbarComponent
-    }
+export default {
+  name: "MainLayout",
+  components: {
+    NavbarComponent
   }
+};
 </script>
