@@ -1,5 +1,7 @@
 <template>
   <div class="hello">
+    <b-btn variant="dark" to="/dashboard">Dashboard</b-btn>
+    <b-btn variant="primary" to="/login">Login</b-btn>
     <h1>{{ msg }}</h1>
     <p>
       For a guide and recipes on how to configure / customize this project,<br />
