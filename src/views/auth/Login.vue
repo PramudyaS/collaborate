@@ -59,7 +59,13 @@ export default {
     async login() {
       await this.signIn(this.form)
         .then(response => {
-          console.log(response);
+          if (response == 200) {
+               this.$bvToast.toast('Success Login',{
+                solid:true,
+                title:'Login Success'
+              });
+               this.$router.push({name:'dashboard'});
+          }
         })
         .catch(error => {
           this.title = error.response.statusText;
@@ -72,9 +78,6 @@ export default {
         });
     }
   }
-  // components:{
-  //   'AlertComponent': ()=> import('@/components/master/partials/AlertComponent.vue')
-  // }
 };
 </script>
 

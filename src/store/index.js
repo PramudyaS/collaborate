@@ -27,6 +27,7 @@ export default new Vuex.Store({
       await Axios.post(`${BASE_URL}/api/login`, { credentials });
 
       dispatch("user");
+      return '200';
     },
 
     // async signOut({dispatch})
