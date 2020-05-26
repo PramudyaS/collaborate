@@ -17,7 +17,8 @@ const routes = [
     children: [
       {
         path: "",
-        component: Login
+        component: Login,
+        name: "login"
       }
     ]
   },
@@ -32,7 +33,7 @@ const routes = [
       {
         path: "/dashboard",
         component: Dashboard,
-        name:'dashboard'
+        name: "dashboard"
       }
     ]
   },
@@ -55,6 +56,22 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  const publicPages = ["/login", "/logout"];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem("user-token");
+
+  if (!loggedIn && authRequired) {
+    return next("/login");
+  }
+
+  if (to.name === "login" && loggedIn) {
+    return next("/dashboard");
+  }
+
+  next();
 });
 
 export default router;

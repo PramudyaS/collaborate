@@ -60,11 +60,11 @@ export default {
       await this.signIn(this.form)
         .then(response => {
           if (response == 200) {
-               this.$bvToast.toast('Success Login',{
-                solid:true,
-                title:'Login Success'
-              });
-               this.$router.push({name:'dashboard'});
+            this.$bvToast.toast("Success Login", {
+              solid: true,
+              title: "Login Success"
+            });
+            this.$router.push({ name: "dashboard" });
           }
         })
         .catch(error => {

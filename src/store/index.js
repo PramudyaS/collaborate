@@ -10,7 +10,8 @@ const BASE_URL = "http://collaborate.deploy:8080";
 export default new Vuex.Store({
   state: {
     authenticated: false,
-    user: null
+    user: null,
+    token: localStorage.getItem("user-token") || ""
   },
   mutations: {
     SET_AUTHENTICATED(state, value) {
@@ -19,15 +20,23 @@ export default new Vuex.Store({
 
     SET_USER(state, value) {
       state.user = value;
+    },
+
+    SET_TOKEN(state, value) {
+      state.token = value;
+      localStorage.setItem("user-token", state.token);
     }
   },
   actions: {
     async signIn({ dispatch }, credentials) {
       await Axios.get(`${BASE_URL}/sanctum/csrf-cookie`);
-      await Axios.post(`${BASE_URL}/api/login`, { credentials });
-
-      dispatch("user");
-      return '200';
+      await Axios.post(`${BASE_URL}/api/login`, { credentials }).then(
+        response => {
+          this.commit("SET_TOKEN", response.data.token);
+          dispatch("user");
+        }
+      );
+      return "200";
     },
 
     // async signOut({dispatch})
