@@ -9,6 +9,7 @@
 import Axios from "axios";
 import Loader from "@/components/master/partials/LoaderComponent.vue";
 import { mapState } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "AppLayout",
@@ -16,7 +17,8 @@ export default {
     Loader
   },
   computed: {
-    ...mapState("loader", ["loading"])
+    ...mapState("loader", ["loading"]),
+    ...mapActions(["signOut"])
   },
   created() {
     Axios.interceptors.request.use(
@@ -40,6 +42,13 @@ export default {
         return Promise.reject(error);
       }
     );
+
+   Axios.interceptors.response.use(response => response,error =>{
+    if (error.response.status === 401) {
+        this.$store.dispatch("signOut");
+    }
+    return Promise.reject(error);
+   })
   }
 };
 </script>

@@ -39,10 +39,11 @@ export default new Vuex.Store({
       return "200";
     },
 
-    // async signOut({dispatch})
-    // {
-
-    // },
+    async signOut({commit})
+    {
+      commit("SET_AUTHENTICATED",false);
+      localStorage.removeItem("user-token");
+    },
 
     user({ commit }) {
       return Axios.get(`${BASE_URL}/api/user`)
