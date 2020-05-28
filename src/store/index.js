@@ -33,16 +33,17 @@ export default new Vuex.Store({
       await Axios.post(`${BASE_URL}/api/login`, { credentials }).then(
         response => {
           this.commit("SET_TOKEN", response.data.token);
+          localStorage.setItem("user-id", response.data.user.id);
           dispatch("user");
         }
       );
       return "200";
     },
 
-    async signOut({commit})
-    {
-      commit("SET_AUTHENTICATED",false);
+    async signOut({ commit }) {
+      commit("SET_AUTHENTICATED", false);
       localStorage.removeItem("user-token");
+      localStorage.removeItem("user-id");
     },
 
     user({ commit }) {

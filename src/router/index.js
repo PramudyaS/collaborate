@@ -1,5 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "../store/index.js";
+
 import Home from "../views/Home.vue";
 import AppLayout from "../layouts/MainLayout.vue";
 import AuthLayout from "../layouts/AuthLayout.vue";
@@ -31,9 +33,16 @@ const routes = [
         component: Home
       },
       {
-        path: "/dashboard",
+        path: "/project",
         component: Dashboard,
-        name: "dashboard"
+        name: "dashboard",
+        children: [
+          {
+            path: "create",
+            component: () => import("../views/projects/Create"),
+            name: "project.create"
+          }
+        ]
       }
     ]
   },
@@ -61,8 +70,8 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const publicPages = ["/login", "/logout"];
   const authRequired = !publicPages.includes(to.path);
-  const loggedIn = localStorage.getItem("user-token");
-  console.log(loggedIn);
+  const loggedIn = store.state.token;
+
   if (!loggedIn && authRequired) {
     return next("/login");
   }

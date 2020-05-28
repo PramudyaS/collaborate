@@ -43,12 +43,21 @@ export default {
       }
     );
 
-   Axios.interceptors.response.use(response => response,error =>{
-    if (error.response.status === 401) {
-        this.$store.dispatch("signOut");
-    }
-    return Promise.reject(error);
-   })
+    Axios.interceptors.response.use(
+      response => response,
+      error => {
+        if (error.response.status === 401) {
+          this.$store.dispatch("signOut");
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 };
 </script>
+
+<style>
+#app {
+  padding-bottom: 200px;
+}
+</style>

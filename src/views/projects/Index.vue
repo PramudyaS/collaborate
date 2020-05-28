@@ -1,58 +1,102 @@
 <template>
   <b-container fluid>
-  	<b-row>
-  		<b-col md="4" sm="12" v-for="index in 4" :key="index">
-  			<b-card
-		    title="Card Title"
-		    img-src="https://picsum.photos/600/300/?image=25"
-		    img-alt="Image"
-		    img-top
-		    tag="article"
-		    style="max-width: 20rem;"
-		    class="mb-2"
-		  	>
-		    <b-card-text>
-		      Some quick example text to build on the card title and make up the bulk of the card's content.
-		    </b-card-text>
+    <b-row>
+      <b-col md="4" sm="12" v-for="project in projects" :key="project.id">
+        <b-card
+          :title="project.name"
+          img-src="https://picsum.photos/600/300/?image=25"
+          img-alt="Image"
+          img-top
+          tag="article"
+          style="max-width: 20rem;"
+          class="mb-2"
+        >
+          <b-card-text>
+            {{ project.description }}
+            <br />
+            <b>Date : {{ project.date_start }} - {{ project.date_end }}</b>
+          </b-card-text>
 
-		    <b-button href="#" variant="primary">Go somewhere</b-button>
-		  </b-card>
-  		</b-col>
-  	</b-row>
+          <b-button href="#" variant="primary">Go somewhere</b-button>
+        </b-card>
+      </b-col>
+      <router-view @updateProject="updateProject" />
+      <b-col md="4" v-if="showNavigationCard">
+        <b-card class="project-card-shadow" @click="showCreate">
+          <b-card-text class="text-center align-middle">
+            <p style="margin-top:50%">
+              Create New Project <span class="fa fa-plus"></span>
+            </p>
+          </b-card-text>
+        </b-card>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
 <script>
-	import ProjectServices from '@/api-services/project_services.js';
+import ProjectServices from "@/api-services/project_services.js";
 
-	export default
-	{
-		name:'ProjectList',
-		data:()=>
-		{
-			return{
-				projects:[],
-				form:{
-					name:null,
-					description:null,
-					date_start:null,
-					creator_id:null,
-					date_end:null
-				}
-			}
-		},
-		methods:{
-			async getProjects()
-			{
-				await ProjectServices.index(1).then((response)=>{
-					console.log(response);
-				}).catch((error)=>{	
-					console.log(error);
-				});
-			}
-		},
-		mounted:function(){
-			this.getProjects();
-		}
-	}
+export default {
+  name: "ProjectList",
+  data: () => {
+    return {
+      projects: [],
+      shadowCard: true
+    };
+  },
+  watch: {
+    $route(to, from) {
+      if (from.name === "project.create") {
+        this.shadowCard = true;
+      }
+    }
+  },
+  computed: {
+    showNavigationCard() {
+      return this.shadowCard;
+    }
+  },
+  methods: {
+    async getProjects() {
+      await ProjectServices.index(localStorage.getItem("user-id"))
+        .then(response => {
+          this.projects = response.data.projects;
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    showCreate() {
+      this.$router.push({ name: "project.create" });
+      this.shadowCard = false;
+    },
+    updateProject(project) {
+      this.projects.push(project);
+    }
+  },
+  mounted: function() {
+    this.getProjects();
+  }
+};
 </script>
+
+<style scoped>
+.project-card-shadow {
+  height: 350px;
+  border: 2px dashed grey;
+}
+
+.project-card-shadow:hover {
+  cursor: pointer;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active di bawah versi 2.1.8 */ {
+  opacity: 0;
+}
+</style>

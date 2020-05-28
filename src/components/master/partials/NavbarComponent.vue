@@ -28,13 +28,28 @@
         <li class="nav-item">
           <a class="nav-link disabled" href="#">Disabled</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" @click="logout">Logout</a>
+        </li>
       </ul>
     </div>
   </nav>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
-  name: "NavbarComponent"
+  name: "NavbarComponent",
+  methods: {
+    ...mapActions({
+      signOut: "signOut"
+    }),
+
+    logout() {
+      this.$store.dispatch("signOut");
+      this.$router.push({ name: "login" });
+    }
+  }
 };
 </script>
