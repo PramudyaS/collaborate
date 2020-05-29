@@ -27,14 +27,20 @@ export default new Vuex.Store({
       localStorage.setItem("user-token", state.token);
     }
   },
+  getters: {
+    AuthStatus(state) {
+      return state.authenticated;
+    }
+  },
   actions: {
     async signIn({ dispatch }, credentials) {
       await Axios.get(`${BASE_URL}/sanctum/csrf-cookie`);
       await Axios.post(`${BASE_URL}/api/login`, { credentials }).then(
         response => {
-          this.commit("SET_TOKEN", response.data.token);
-          localStorage.setItem("user-id", response.data.user.id);
-          dispatch("user");
+          dispatch("user").then(() => {
+            this.commit("SET_TOKEN", response.data.token);
+            localStorage.setItem("user-id", response.data.user.id);
+          });
         }
       );
       return "200";
@@ -44,6 +50,8 @@ export default new Vuex.Store({
       commit("SET_AUTHENTICATED", false);
       localStorage.removeItem("user-token");
       localStorage.removeItem("user-id");
+
+      return 200;
     },
 
     user({ commit }) {

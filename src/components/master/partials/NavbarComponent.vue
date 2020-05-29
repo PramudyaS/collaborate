@@ -29,7 +29,9 @@
           <a class="nav-link disabled" href="#">Disabled</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" @click="logout">Logout</a>
+          <a class="nav-link" href="#" v-if="isLoggedIn" @click="logout"
+            >Logout</a
+          >
         </li>
       </ul>
     </div>
@@ -41,15 +43,25 @@ import { mapActions } from "vuex";
 
 export default {
   name: "NavbarComponent",
+  data: () => {
+    return {
+      isLoggedIn: localStorage.getItem("user-token") ? true : false
+    };
+  },
   methods: {
     ...mapActions({
       signOut: "signOut"
     }),
 
     logout() {
-      this.$store.dispatch("signOut");
-      this.$router.push({ name: "login" });
+      this.$store.dispatch("signOut").then(response => {
+        if (response == 200) {
+          document.location.href = "/";
+        }
+      });
     }
   }
 };
 </script>
+
+<style scoped></style>

@@ -12,10 +12,30 @@ import NotFound from "@/components/404.vue";
 
 Vue.use(VueRouter);
 
+const ifNotAuthenticated = (to, from, next) => {
+  if (!store.state.token) {
+    next();
+    console.log("not logged in");
+    return;
+  }
+  console.log(from);
+  next("/project");
+};
+
+const Authenticated = (to, from, next) => {
+  if (store.state.token) {
+    next();
+    console.log("logged in");
+    return;
+  }
+  next("/login");
+};
+
 const routes = [
   {
     path: "/login",
     component: AuthLayout,
+    beforeEnter: ifNotAuthenticated,
     children: [
       {
         path: "",
@@ -36,6 +56,7 @@ const routes = [
         path: "/project",
         component: Dashboard,
         name: "dashboard",
+        beforeEnter: Authenticated,
         children: [
           {
             path: "create",
@@ -65,22 +86,6 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
-});
-
-router.beforeEach((to, from, next) => {
-  const publicPages = ["/login", "/logout"];
-  const authRequired = !publicPages.includes(to.path);
-  const loggedIn = store.state.token;
-
-  if (!loggedIn && authRequired) {
-    return next("/login");
-  }
-
-  if (to.name === "login" && loggedIn) {
-    return next("/dashboard");
-  }
-
-  next();
 });
 
 export default router;

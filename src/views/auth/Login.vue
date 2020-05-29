@@ -64,7 +64,9 @@ export default {
               solid: true,
               title: "Login Success"
             });
-            this.$router.push({ name: "dashboard" });
+            setTimeout(function() {
+              document.location.href = "/project";
+            }, 1000);
           }
         })
         .catch(error => {
