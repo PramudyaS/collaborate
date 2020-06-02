@@ -64,6 +64,12 @@ const routes = [
             name: "project.create"
           }
         ]
+      },
+      {
+        path: "/task",
+        component: () => import("../views/task/Index"),
+        name: "task.index",
+        beforeEnter: Authenticated
       }
     ]
   },

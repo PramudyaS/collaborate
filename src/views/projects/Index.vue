@@ -9,15 +9,18 @@
           img-top
           tag="article"
           style="max-width: 20rem;"
-          class="mb-2"
+          class="mb-2 card-project"
+          @click="gotoTask"
         >
           <b-card-text>
             {{ project.description }}
             <br />
             <b>Date : {{ project.date_start }} - {{ project.date_end }}</b>
+            <b-avatar src="https://placekitten.com/300/300"></b-avatar>
+            <b-avatar src="https://placekitten.com/300/300"></b-avatar>
+            <b-avatar src="https://placekitten.com/300/300"></b-avatar>
           </b-card-text>
-
-          <b-button href="#" variant="primary">Go somewhere</b-button>
+          <b-progress value="25" max="100" show-progress animated></b-progress>
         </b-card>
       </b-col>
       <router-view @updateProject="updateProject" />
@@ -72,8 +75,13 @@ export default {
       this.$router.push({ name: "project.create" });
       this.shadowCard = false;
     },
+
     updateProject(project) {
       this.projects.push(project);
+    },
+
+    gotoTask() {
+      this.$router.push({ name: "task.index" });
     }
   },
   mounted: function() {
@@ -83,6 +91,10 @@ export default {
 </script>
 
 <style scoped>
+.card-project:hover {
+  cursor: pointer;
+}
+
 .project-card-shadow {
   height: 350px;
   border: 2px dashed grey;

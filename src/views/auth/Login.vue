@@ -66,7 +66,7 @@ export default {
             });
             setTimeout(function() {
               document.location.href = "/project";
-            }, 1000);
+            }, 2000);
           }
         })
         .catch(error => {
