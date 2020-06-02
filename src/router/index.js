@@ -66,9 +66,15 @@ const routes = [
         ]
       },
       {
-        path: "/task",
-        component: () => import("../views/task/Index"),
-        name: "task.index",
+        path: "/project/:id",
+        component: () => import("../views/projects/Show"),
+        name: "project.show",
+        beforeEnter: Authenticated
+      },
+      {
+        path: "/task/:id",
+        component: () => import("../views/task/Show"),
+        name: "task.show",
         beforeEnter: Authenticated
       }
     ]

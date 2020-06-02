@@ -81,7 +81,7 @@ export default {
     },
 
     gotoTask() {
-      this.$router.push({ name: "task.index" });
+      this.$router.push({ name: "project.show", params: { id: "1" } });
     }
   },
   mounted: function() {
