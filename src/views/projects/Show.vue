@@ -3,12 +3,12 @@
     <div class="header">
       <b-row>
         <b-col md="12">
-          <h3>Project Name Details</h3>
+          <h3>{{ project.name }}</h3>
         </b-col>
         <b-col md="12">
-          <b-card title="Created At" sub-title="Owner :">
+          <b-card :title="titleProject" :sub-title="creatorProject">
             <b-card-text>
-              Project Full Description
+              {{ project.description }}
             </b-card-text>
             <div class="participant float-right">
               <b>Participant : </b>
@@ -18,7 +18,7 @@
               <b-avatar src="https://placekitten.com/300/300"></b-avatar>
             </div>
             <div class="btn-group mt-5">
-              <b-button variant="outline-primary" size="sm"
+              <b-button variant="outline-primary" size="sm" v-b-modal.modal-1
                 >Add New Task <span class="fa fa-plus"></span
               ></b-button>
               <b-button variant="outline-dark" size="sm"
@@ -29,51 +29,75 @@
         </b-col>
       </b-row>
     </div>
+    <b-modal ref="modal-1" id="modal-1" title="Create New Task" hide-footer>
+      <TaskCreate @closeModal="hideModal" @updateTask="newTask" />
+    </b-modal>
     <b-row>
       <b-col md="12">
         <h4>Current Task</h4>
       </b-col>
-      <b-col md="12">
-        <b-row>
-          <b-col md="4" v-for="index in 3" :key="index">
-            <b-card bg-variant="dark" text-variant="white" title="Task Tittle">
-              <b-card-text>
-                With supporting text below as a natural lead-in to additional
-                content.
-                <br />
-                <b>Status :</b>
-                <b-form-select
-                  id="inline-form-custom-select-pref"
-                  class="mb-2 mr-sm-2 mb-sm-0"
-                  :options="status"
-                  :value="status[0]"
-                ></b-form-select>
-                <br />
-                <b>Due Date : 20 April 2020</b>
-              </b-card-text>
-              <b-button variant="primary" @click="gotoDetailTask"
-                >Detail</b-button
-              >
-            </b-card>
-          </b-col>
-        </b-row>
-      </b-col>
+      <TaskList :task="task" />
     </b-row>
   </b-col>
 </template>
 
 <script>
+import ProjecService from "@/api-services/project_services.js";
+
 export default {
   name: "projectShow",
+  components: {
+    TaskList: () => import("@/views/task/Index"),
+    TaskCreate: () => import("@/views/task/Create")
+  },
   data: () => {
     return {
-      status: ["progress", "hold", "done"]
+      status: ["progress", "hold", "done"],
+      task: [],
+      project: {
+        name: null,
+        description: null,
+        creator: null,
+        created_at: null,
+        date_start: null,
+        date_end: null
+      }
     };
   },
-  methods: {
-    gotoDetailTask() {
-      this.$router.push({ name: "task.show", params: { id: "1" } });
+  computed: {
+    titleProject() {
+      return (
+        "Created At : " +
+        this.$options.filters.formatDate(this.project.created_at)
+      );
+    },
+
+    creatorProject() {
+      return "Owner : " + this.project.creator.name;
     }
+  },
+  methods: {
+    hideModal() {
+      this.$refs["modal-1"].hide();
+    },
+
+    newTask(data) {
+      this.task = data;
+    },
+
+    async projectDetail() {
+      return ProjecService.find(this.$route.params.id)
+        .then(response => {
+          this.project = response.data.project;
+          console.log(this.project);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  },
+  created: function() {
+    this.projectDetail();
   }
 };
 </script>

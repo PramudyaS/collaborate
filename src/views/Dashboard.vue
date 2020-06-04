@@ -30,10 +30,6 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  padding-bottom: 20px;
-  padding-top: 20px;
-}
 .card-project-shadow {
   border-style: dotted;
 }

@@ -1,77 +1,69 @@
 <template>
-  <b-col>
-    <div class="header">
-      <b-row>
-        <b-col md="12">
-          <h3>Project Name Details</h3>
-        </b-col>
-        <b-col md="12">
-          <b-card title="Created At" sub-title="Owner :">
-            <b-card-text>
-              Project Full Description
-            </b-card-text>
-            <div class="participant float-right">
-              <b>Participant : </b>
-              <br />
-              <b-avatar src="https://placekitten.com/300/300"></b-avatar>
-              <b-avatar src="https://placekitten.com/300/300"></b-avatar>
-              <b-avatar src="https://placekitten.com/300/300"></b-avatar>
-            </div>
-            <div class="btn-group mt-5">
-              <b-button variant="outline-primary" size="sm"
-                >Add New Task <span class="fa fa-plus"></span
-              ></b-button>
-              <b-button variant="outline-dark" size="sm"
-                >Add New participant <span class="fa fa-user"></span
-              ></b-button>
-            </div>
-          </b-card>
-        </b-col>
-      </b-row>
-    </div>
+  <b-col md="12">
     <b-row>
-      <b-col md="12">
-        <h4>Current Task</h4>
-      </b-col>
-      <b-col md="12">
-        <b-row>
-          <b-col md="4" v-for="index in 3" :key="index">
-            <b-card bg-variant="dark" text-variant="white" title="Task Tittle">
-              <b-card-text>
-                With supporting text below as a natural lead-in to additional
-                content.
-                <br />
-                <b>Status :</b>
-                <b-form-select
-                  id="inline-form-custom-select-pref"
-                  class="mb-2 mr-sm-2 mb-sm-0"
-                  :options="status"
-                  :value="status[0]"
-                ></b-form-select>
-                <br />
-                <b>Due Date : 20 April 2020</b>
-              </b-card-text>
-              <b-button variant="primary">Detail</b-button>
-            </b-card>
-          </b-col>
-        </b-row>
+      <b-col md="4" v-for="(task, index) in tasks" :key="index">
+        <b-card
+          bg-variant="dark"
+          text-variant="white"
+          :title="task.name"
+          class="mt-3"
+        >
+          <b-card-text>
+            {{ task.description }}
+            <br />
+            <b>Status : {{ task.status }}</b>
+            <b-form-select
+              id="inline-form-custom-select-pref"
+              class="mb-2 mr-sm-2 mb-sm-0"
+              :options="status"
+              :value="status[0]"
+            ></b-form-select>
+            <br />
+            <b>Due Date : {{ task.due_date }}</b>
+          </b-card-text>
+          <b-button variant="primary" @click="gotoDetailTask(task.id)"
+            >Detail</b-button
+          >
+        </b-card>
       </b-col>
     </b-row>
   </b-col>
 </template>
 
 <script>
+import TaskService from "@/api-services/task_services.js";
+
 export default {
   name: "taskIndex",
+  props: ["task"],
   data: () => {
     return {
-      status: ["progress", "hold", "done"]
+      status: ["progress", "hold", "done"],
+      tasks: []
     };
   },
-  methods: {
-    gotoTask() {
-      this.$router.push({ name: "todo.index" });
+  watch: {
+    task: function(param) {
+      this.tasks.push(param);
     }
+  },
+  methods: {
+    async getTask() {
+      await TaskService.index(this.$route.params.id)
+        .then(response => {
+          this.tasks = response.data.tasks;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    gotoDetailTask(id) {
+      this.$router.push({ name: "task.show", params: { id: id } });
+    }
+  },
+  mounted: function() {
+    this.getTask();
   }
 };
 </script>

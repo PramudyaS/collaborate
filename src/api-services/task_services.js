@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-const END_POINT = "http://collaborate.deploy:8080/api/project";
+const END_POINT = "http://collaborate.deploy:8080/api/task";
 
 export default {
   index(id) {
@@ -9,9 +9,5 @@ export default {
 
   store(payload) {
     return Axios.post(`${END_POINT}`, payload);
-  },
-
-  find(id) {
-    return Axios.get(`${END_POINT}/${id}/edit`);
   }
 };
