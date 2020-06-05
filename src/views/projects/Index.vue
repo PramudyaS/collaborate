@@ -41,7 +41,7 @@
 import ProjectServices from "@/api-services/project_services.js";
 
 export default {
-  name: "ProjectList",
+  name: "projectList",
   data: () => {
     return {
       projects: [],

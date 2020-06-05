@@ -49,7 +49,7 @@
 <script>
 import ProjectService from "@/api-services/project_services.js";
 export default {
-  name: "ProjectCreate",
+  name: "projectCreate",
   data: () => {
     return {
       form: {
