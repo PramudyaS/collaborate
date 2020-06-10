@@ -1,7 +1,7 @@
 <template>
   <b-col md="12">
-    <b-row>
-      <b-col md="4" v-for="(todo,index) in todos" :key="index">
+    <b-row v-if="todos.length > 0">
+      <b-col md="4" v-for="(todo, index) in todos" :key="index">
         <b-card
           :bg-variant="cardColor(todo.status)"
           text-variant="white"
@@ -12,13 +12,32 @@
             {{ todo.description }}
           </b-card-text>
 
-          <b-form-select v-once v-model="todo.status"  :options="options" @change="changeStatus(todo.status,todo.id)"></b-form-select>
-
+          <b-form-select
+            v-once
+            v-model="todo.status"
+            :options="options"
+            @change="changeStatus(todo.status, todo.id)"
+          ></b-form-select>
         </b-card>
       </b-col>
     </b-row>
-    <b-modal id="modalStatus" ref="modalStatus" title="Update Status" hide-footer>
-      <modalStatus @closeModal="hideModal" :payload="update"/>
+    <b-row v-else>
+      <b-col md="12">
+        <b-jumbotron
+          class="text-center"
+          header="No Todo Found"
+          lead="Create your first todo"
+        >
+        </b-jumbotron>
+      </b-col>
+    </b-row>
+    <b-modal
+      id="modalStatus"
+      ref="modalStatus"
+      title="Update Status"
+      hide-footer
+    >
+      <modalStatus @closeModal="hideModal" :payload="update" />
     </b-modal>
   </b-col>
 </template>
@@ -28,29 +47,28 @@ import TodoService from "@/api-services/todo_services.js";
 
 export default {
   name: "todoIndex",
-  components:{
-    modalStatus : () => import('@/views/todos/Update.vue')
+  components: {
+    modalStatus: () => import("@/views/todos/Update.vue")
   },
-  props:['todo'],
+  props: ["todo"],
   data: () => {
     return {
       todos: [],
-      selected: 'progress',
+      selected: "progress",
       options: [
-        { value: 'progress', text: 'Progress' },
-        { value: 'hold', text: 'Hold' },
-        { value: 'done', text: 'Done' },
-      ], 
-      update:{
-        id:null,
-        option:null
+        { value: "progress", text: "Progress" },
+        { value: "hold", text: "Hold" },
+        { value: "done", text: "Done" }
+      ],
+      update: {
+        id: null,
+        option: null
       }
     };
   },
-  watch:{
-    todo:function(param)
-    {
-        this.todos.push(param);
+  watch: {
+    todo: function(param) {
+      this.todos.push(param);
     }
   },
   methods: {
@@ -64,33 +82,30 @@ export default {
         });
     },
 
-    async changeStatus(option,id)
-    {
-      this.$bvModal.show('modalStatus');
+    async changeStatus(option, id) {
+      this.$bvModal.show("modalStatus");
       this.update.id = id;
       this.update.option = option;
     },
 
-    cardColor(status)
-    {
+    cardColor(status) {
       if (status === "progress") {
-        return 'dark';
-      }else if(status === "hold"){
-        return 'secondary';
-      }else{
-        return 'primary';
+        return "dark";
+      } else if (status === "hold") {
+        return "secondary";
+      } else {
+        return "primary";
       }
     },
 
-    hideModal()
-    {
-      this.$bvModal.hide('modalStatus');
-      this.$bvToast.toast('Success Update Todo', {
-          title: "Success",
-          variant: "success",
-          solid: true
+    hideModal() {
+      this.$bvModal.hide("modalStatus");
+      this.$bvToast.toast("Success Update Todo", {
+        title: "Success",
+        variant: "success",
+        solid: true
       });
-    },
+    }
   },
   mounted: function() {
     this.getTodos();

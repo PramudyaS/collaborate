@@ -39,13 +39,8 @@ export default {
       this.form.task_id = this.$route.params.id;
       await TodoServices.store(this.form)
         .then(response => {
-          this.$bvToast.toast(response.data.message, {
-            title: "Success",
-            variant: "success",
-            solid: true
-          });
           console.log(response);
-          this.$emit("updateTodo",response.data.todo);
+          this.$emit("updateTodo", response.data.todo);
           this.$emit("closeModal");
         })
         .catch(error => {

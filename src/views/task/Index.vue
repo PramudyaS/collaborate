@@ -1,6 +1,6 @@
 <template>
   <b-col md="12">
-    <b-row>
+    <b-row v-if="tasks.length > 0">
       <b-col md="4" v-for="(task, index) in tasks" :key="index">
         <b-card
           bg-variant="dark"
@@ -25,6 +25,16 @@
             >Detail</b-button
           >
         </b-card>
+      </b-col>
+    </b-row>
+    <b-row v-else>
+      <b-col md="12">
+        <b-jumbotron
+          class="text-center"
+          header="No Task Found"
+          lead="Create your first task"
+        >
+        </b-jumbotron>
       </b-col>
     </b-row>
   </b-col>

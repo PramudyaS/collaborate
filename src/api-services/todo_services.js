@@ -11,8 +11,7 @@ export default {
     return Axios.post(`${END_POINT}`, payload);
   },
 
-  update(id,payload,headers)
-  {
-  	return Axios.post(`${END_POINT}/${id}`,payload,headers);
+  update(id, payload, headers) {
+    return Axios.post(`${END_POINT}/${id}`, payload, headers);
   }
 };

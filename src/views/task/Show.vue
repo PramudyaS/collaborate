@@ -49,7 +49,7 @@
       <b-col md="12">
         <h4>Current Todos</h4>
       </b-col>
-      <TodoList :todo="todo"/>
+      <TodoList :todo="todo" />
     </b-row>
   </b-col>
 </template>
@@ -73,12 +73,12 @@ export default {
         project: null,
         status: null
       },
-      todo:{
-        id:null,
-        name:null,
-        status:null,
-        task_id:null,
-        description:null,
+      todo: {
+        id: null,
+        name: null,
+        status: null,
+        task_id: null,
+        description: null
       }
     };
   },
@@ -100,15 +100,13 @@ export default {
         });
     },
 
-    updateTodo(param)
-    {
+    updateTodo(param) {
       this.todo = param;
     },
 
-    hideModal()
-    {
-      this.$bvModal.hide('modal-1');
-      this.$bvToast.toast('Succes Create Todo', {
+    hideModal() {
+      this.$bvModal.hide("modal-1");
+      this.$bvToast.toast("Succes Create Todo", {
         title: "Success",
         variant: "success",
         solid: true
@@ -117,6 +115,6 @@ export default {
   },
   created: function() {
     this.detailTask();
-  },
+  }
 };
 </script>
