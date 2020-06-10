@@ -45,7 +45,8 @@ export default {
             solid: true
           });
           console.log(response);
-          this.commit("updateTodo");
+          this.$emit("updateTodo",response.data.todo);
+          this.$emit("closeModal");
         })
         .catch(error => {
           console.log(error);

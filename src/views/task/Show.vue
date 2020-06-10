@@ -43,13 +43,13 @@
       </b-row>
     </div>
     <b-modal ref="modal-1" id="modal-1" title="Create New Todo" hide-footer>
-      <TodoCreate />
+      <TodoCreate @updateTodo="updateTodo" @closeModal="hideModal" />
     </b-modal>
     <b-row>
       <b-col md="12">
         <h4>Current Todos</h4>
       </b-col>
-      <TodoList />
+      <TodoList :todo="todo"/>
     </b-row>
   </b-col>
 </template>
@@ -72,6 +72,13 @@ export default {
         due_date: null,
         project: null,
         status: null
+      },
+      todo:{
+        id:null,
+        name:null,
+        status:null,
+        task_id:null,
+        description:null,
       }
     };
   },
@@ -87,15 +94,29 @@ export default {
       await TaskService.find(this.$route.params.id)
         .then(response => {
           this.task = response.data.task;
-          console.log(response.data.task);
         })
         .catch(error => {
           console.log(error);
         });
+    },
+
+    updateTodo(param)
+    {
+      this.todo = param;
+    },
+
+    hideModal()
+    {
+      this.$bvModal.hide('modal-1');
+      this.$bvToast.toast('Succes Create Todo', {
+        title: "Success",
+        variant: "success",
+        solid: true
+      });
     }
   },
   created: function() {
     this.detailTask();
-  }
+  },
 };
 </script>
