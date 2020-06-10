@@ -10,7 +10,7 @@
           tag="article"
           style="max-width: 20rem;"
           class="mb-2 card-project"
-          @click="gotoTask"
+          @click="gotoTask(project.id)"
         >
           <b-card-text>
             {{ project.description }}
@@ -80,8 +80,8 @@ export default {
       this.projects.push(project);
     },
 
-    gotoTask() {
-      this.$router.push({ name: "project.show", params: { id: "1" } });
+    gotoTask(id) {
+      this.$router.push({ name: "project.show", params: { id: id } });
     }
   },
   mounted: function() {
