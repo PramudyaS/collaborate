@@ -19,7 +19,7 @@
               :value="status[0]"
             ></b-form-select>
             <br />
-            <b>Due Date : {{ task.due_date }}</b>
+            <b>Due Date : {{ task.due_date | formatDate }}</b>
           </b-card-text>
           <b-button variant="primary" @click="gotoDetailTask(task.id)"
             >Detail</b-button

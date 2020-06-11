@@ -48,18 +48,23 @@
 
 <script>
 import ProjectService from "@/api-services/project_services.js";
+
+function initialState() {
+  return {
+    form: {
+      name: null,
+      description: null,
+      date_start: null,
+      date_end: null,
+      creator_id: localStorage.getItem("user-id")
+    }
+  };
+}
+
 export default {
   name: "projectCreate",
   data: () => {
-    return {
-      form: {
-        name: null,
-        description: null,
-        date_start: null,
-        date_end: null,
-        creator_id: localStorage.getItem("user-id")
-      }
-    };
+    return initialState();
   },
   methods: {
     cancelCreate() {
@@ -76,6 +81,7 @@ export default {
               solid: true
             });
             this.$emit("updateProject", this.form);
+            this.resetForm();
           }
         })
         .catch(error => {
@@ -86,6 +92,10 @@ export default {
           });
           console.log(error);
         });
+    },
+
+    resetForm() {
+      Object.assign(this.$data, initialState());
     }
   }
 };

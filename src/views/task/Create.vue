@@ -25,16 +25,21 @@
 <script>
 import TaskService from "@/api-services/task_services.js";
 
+function initialState() {
+  return {
+    form: {
+      name: null,
+      description: null,
+      due_date: null,
+      project_id: null,
+      creator_id: localStorage.getItem("user-id")
+    }
+  };
+}
+
 export default {
   data: () => {
-    return {
-      form: {
-        name: null,
-        description: null,
-        due_date: null,
-        project_id: null
-      }
-    };
+    return initialState();
   },
   methods: {
     async createTask() {
@@ -48,10 +53,15 @@ export default {
           });
           this.$emit("updateTask", response.data.task);
           this.$emit("closeModal");
+          this.resetForm();
         })
         .catch(error => {
           console.log(error);
         });
+    },
+
+    resetForm() {
+      Object.assign(this.$data, initialState());
     }
   }
 };

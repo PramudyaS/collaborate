@@ -28,7 +28,8 @@ export default {
       form: {
         file: null,
         url: null,
-        payload: null
+        payload: null,
+        done_by: 1
       }
     };
   },

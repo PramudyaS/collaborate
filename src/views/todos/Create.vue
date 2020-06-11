@@ -22,17 +22,20 @@
 <script>
 import TodoServices from "@/api-services/todo_services.js";
 
+function initialState() {
+  return {
+    form: {
+      task_id: null,
+      name: null,
+      description: null
+    }
+  };
+}
+
 export default {
   name: "todoCreate",
   data: () => {
-    return {
-      form: {
-        task_id: null,
-        name: null,
-        description: null,
-        user_id: 1
-      }
-    };
+    return initialState();
   },
   methods: {
     async createTodo() {
@@ -42,10 +45,15 @@ export default {
           console.log(response);
           this.$emit("updateTodo", response.data.todo);
           this.$emit("closeModal");
+          this.resetForm();
         })
         .catch(error => {
           console.log(error);
         });
+    },
+
+    resetForm() {
+      Object.assign(this.$data, initialState());
     }
   }
 };

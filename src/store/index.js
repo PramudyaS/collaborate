@@ -10,7 +10,7 @@ const BASE_URL = "http://collaborate.deploy:8080";
 export default new Vuex.Store({
   state: {
     authenticated: false,
-    user: null,
+    user: localStorage.getItem("user-name") || "",
     token: localStorage.getItem("user-token") || ""
   },
   mutations: {
@@ -20,6 +20,7 @@ export default new Vuex.Store({
 
     SET_USER(state, value) {
       state.user = value;
+      localStorage.setItem("user-name", state.user.name);
     },
 
     SET_TOKEN(state, value) {

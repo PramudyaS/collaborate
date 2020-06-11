@@ -15,7 +15,10 @@
           <b-card-text>
             {{ project.description }}
             <br />
-            <b>Date : {{ project.date_start }} - {{ project.date_end }}</b>
+            <b
+              >Date : {{ project.date_start | formatDate }} -
+              {{ project.date_end | formatDate }}</b
+            >
             <b-avatar src="https://placekitten.com/300/300"></b-avatar>
             <b-avatar src="https://placekitten.com/300/300"></b-avatar>
             <b-avatar src="https://placekitten.com/300/300"></b-avatar>
@@ -65,7 +68,6 @@ export default {
       await ProjectServices.index(localStorage.getItem("user-id"))
         .then(response => {
           this.projects = response.data.projects;
-          console.log(response);
         })
         .catch(error => {
           console.log(error);
