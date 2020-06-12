@@ -53,6 +53,10 @@ const routes = [
         component: Home
       },
       {
+        path: "my_profile",
+        component: () => import("../views/my_profile/Index")
+      },
+      {
         path: "/project",
         component: Dashboard,
         name: "dashboard",

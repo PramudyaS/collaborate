@@ -13,5 +13,9 @@ export default {
 
   find(id) {
     return Axios.get(`${END_POINT}/${id}/edit`);
+  },
+
+  addUser(payload) {
+    return Axios.post(`${END_POINT}/user/add`, payload);
   }
 };

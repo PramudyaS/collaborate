@@ -21,7 +21,10 @@
               <b-button variant="outline-primary" size="sm" v-b-modal.modal-1
                 >Add New Task <span class="fa fa-plus"></span
               ></b-button>
-              <b-button variant="outline-dark" size="sm"
+              <b-button
+                variant="outline-dark"
+                size="sm"
+                v-b-modal.modal-participant
                 >Add New participant <span class="fa fa-user"></span
               ></b-button>
             </div>
@@ -31,6 +34,14 @@
     </div>
     <b-modal ref="modal-1" id="modal-1" title="Create New Task" hide-footer>
       <TaskCreate @closeModal="hideModal" @updateTask="newTask" />
+    </b-modal>
+    <b-modal
+      ref="modal-participant"
+      id="modal-participant"
+      title="Add New Participant"
+      hide-footer
+    >
+      <ParticipantCreate />
     </b-modal>
     <b-row>
       <b-col md="12">
@@ -42,13 +53,14 @@
 </template>
 
 <script>
-import ProjecService from "@/api-services/project_services.js";
+import ProjectService from "@/api-services/project_services.js";
 
 export default {
   name: "projectShow",
   components: {
     TaskList: () => import("@/views/task/Index"),
-    TaskCreate: () => import("@/views/task/Create")
+    TaskCreate: () => import("@/views/task/Create"),
+    ParticipantCreate: () => import("@/views/participant/Create")
   },
   data: () => {
     return {
@@ -73,7 +85,11 @@ export default {
     },
 
     creatorProject() {
-      return "Owner : " + this.project.creator.name;
+      if (this.project.creator !== null) {
+        return "Owner : " + this.project.creator.name;
+      } else {
+        return "Owner : ";
+      }
     }
   },
   methods: {
@@ -86,7 +102,7 @@ export default {
     },
 
     async projectDetail() {
-      return ProjecService.find(this.$route.params.id)
+      return ProjectService.find(this.$route.params.id)
         .then(response => {
           this.project = response.data.project;
           console.log(this.project);
