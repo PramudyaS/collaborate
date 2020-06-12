@@ -21,16 +21,27 @@ export default {
     ...mapActions(["signOut"])
   },
   created() {
-    Axios.interceptors.request.use(
+    const instace = Axios.create();
+    instace.interceptors.request.use(
       config => {
         this.$store.commit("loader/show");
-        return config;
+        config.loader = true;
       },
       error => {
-        this.$store.commit("loader/hide");
+        this.$store.commit("loade/hide");
         return Promise.reject(error);
       }
     );
+    // Axios.interceptors.request.use(
+    //   config => {
+    //     this.$store.commit("loader/show");
+    //     return config;
+    //   },
+    //   error => {
+    //     this.$store.commit("loader/hide");
+    //     return Promise.reject(error);
+    //   }
+    // );
 
     Axios.interceptors.response.use(
       response => {

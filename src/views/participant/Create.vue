@@ -2,7 +2,12 @@
   <b-col>
     <b-form>
       <b-form-group label="Name/Username">
-        <b-input type="text" v-model="search" autocomplete="off"></b-input>
+        <b-input
+          type="text"
+          v-model="search"
+          autocomplete="off"
+          @keyup="debounceOnChanged"
+        ></b-input>
       </b-form-group>
     </b-form>
     <b-row v-if="users.length > 0">
@@ -65,6 +70,7 @@
 <script>
 import Axios from "axios";
 import ProjectServices from "@/api-services/project_services.js";
+import _ from "lodash";
 
 const END_POINT = "http://collaborate.deploy:8080/api/user/search";
 
@@ -130,10 +136,11 @@ export default {
 
     handleInput() {
       this.isTyping = !this.isTyping;
-    }
-  },
-  created: function() {
-    this.usersSearch();
+    },
+
+    debounceOnChanged: _.debounce(function() {
+      this.usersSearch();
+    }, 700)
   }
 };
 </script>
