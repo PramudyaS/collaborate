@@ -27,6 +27,9 @@
                 v-b-modal.modal-participant
                 >Add New participant <span class="fa fa-user"></span
               ></b-button>
+              <b-button variant="danger" size="sm" @click="deleteProject"
+                ><span class="fa fa-trash"></span> Delete Project</b-button
+              >
             </div>
           </b-card>
         </b-col>
@@ -73,7 +76,7 @@ export default {
         created_at: null,
         date_start: null,
         date_end: null
-      },
+      }
     };
   },
   computed: {
@@ -109,6 +112,37 @@ export default {
         })
         .catch(error => {
           console.log(error);
+        });
+    },
+
+    deleteProject() {
+      this.boxTwo = "";
+      this.$bvModal
+        .msgBoxConfirm("Please confirm that you want to delete this project.", {
+          title: "Please Confirm",
+          size: "sm",
+          buttonSize: "sm",
+          okVariant: "danger",
+          okTitle: "YES",
+          cancelTitle: "NO",
+          footerClass: "p-2",
+          hideHeaderClose: false,
+          centered: true
+        })
+        .then(async value => {
+          this.boxTwo = value;
+          if (value) {
+            await ProjectService.delete(this.$route.params.id)
+              .then(() => {
+                this.$router.push({ name: "dashboard" });
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
+        })
+        .catch(err => {
+          console.log(err);
         });
     }
   },

@@ -15,6 +15,10 @@ export default {
     return Axios.get(`${END_POINT}/${id}/edit`);
   },
 
+  delete(id) {
+    return Axios.delete(`${END_POINT}/${id}`);
+  },
+
   addUser(payload) {
     return Axios.post(`${END_POINT}/user/add`, payload);
   }

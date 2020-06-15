@@ -13,5 +13,9 @@ export default {
 
   find(id) {
     return Axios.get(`${END_POINT}/${id}/edit`);
+  },
+
+  delete(id) {
+    return Axios.delete(`${END_POINT}/${id}`);
   }
 };

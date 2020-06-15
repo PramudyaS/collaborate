@@ -29,14 +29,15 @@
               {{ task.description }}
             </b-card-text>
             <b-row>
-              <b-col md="4">
-                
-              </b-col>
+              <b-col md="4"> </b-col>
             </b-row>
             <div class="btn-group mt-5">
               <b-button variant="outline-primary" size="sm" v-b-modal.modal-1
                 >Add New Todo <span class="fa fa-plus"></span
               ></b-button>
+              <b-button variant="danger" size="sm" @click="deleteTask"
+                ><span class="fa fa-trash"></span> Delete This Task</b-button
+              >
             </div>
           </b-card>
         </b-col>
@@ -111,6 +112,35 @@ export default {
         variant: "success",
         solid: true
       });
+    },
+
+    deleteTask() {
+      this.$bvModal
+        .msgBoxConfirm("Please confirm that you want to delete this task.", {
+          title: "Please Confirm",
+          size: "sm",
+          buttonSize: "sm",
+          okVariant: "danger",
+          okTitle: "YES",
+          cancelTitle: "NO",
+          footerClass: "p-2",
+          hideHeaderClose: false,
+          centered: true
+        })
+        .then(async value => {
+          if (value) {
+            await TaskService.delete(this.$route.params.id)
+              .then(() => {
+                this.$router.go(-1);
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   created: function() {

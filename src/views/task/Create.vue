@@ -46,11 +46,6 @@ export default {
       this.form.project_id = this.$route.params.id;
       await TaskService.store(this.form)
         .then(response => {
-          this.$bvToast.toast(response.data.message, {
-            title: `Success`,
-            variant: "success",
-            solid: true
-          });
           this.$emit("updateTask", response.data.task);
           this.$emit("closeModal");
           this.resetForm();

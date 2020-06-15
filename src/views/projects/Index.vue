@@ -82,8 +82,8 @@ export default {
       this.projects.push(project);
     },
 
-    gotoTask(id) {
-      this.$router.push({ name: "project.show", params: { id: id } });
+    async gotoTask(id) {
+      await this.$router.push({ name: "project.show", params: { id: id } });
     }
   },
   mounted: function() {
