@@ -73,7 +73,13 @@ const routes = [
         path: "/project/:id",
         component: () => import("../views/projects/Show"),
         name: "project.show",
-        beforeEnter: Authenticated
+        beforeEnter: Authenticated,
+        meta:{
+          breadcrumb:[
+            { text: 'Projects' , href:'/project' },
+            { text: '1', href:'#',active:true}
+          ]
+        }
       },
       {
         path: "/task/:id",

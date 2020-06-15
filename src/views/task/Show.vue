@@ -6,36 +6,36 @@
           <h3>{{ task.name }}</h3>
         </b-col>
         <b-col md="12">
-          <b-card :title="duedateTask">
+          <b-card>
+            <b-card-title>
+              <b-row>
+                <b-col md="6">
+                  <p>Due Date : {{ task.due_date | formatDate }}</p>
+                </b-col>
+                <b-col md="3" offset-md="3">
+                  <div class="task-status">
+                    <b-form-select
+                      id="inline-form-custom-select-pref"
+                      class="mb-2 mr-sm-2 mb-sm-0"
+                      :options="status"
+                      :value="status[0]"
+                      size="sm"
+                    ></b-form-select>
+                  </div>
+                </b-col>
+              </b-row>
+            </b-card-title>
             <b-card-text>
               {{ task.description }}
             </b-card-text>
             <b-row>
               <b-col md="4">
-                <div class="task-status">
-                  <b-form-select
-                    id="inline-form-custom-select-pref"
-                    class="mb-2 mr-sm-2 mb-sm-0"
-                    :options="status"
-                    :value="status[0]"
-                    size="sm"
-                  ></b-form-select>
-                </div>
+                
               </b-col>
             </b-row>
-            <div class="participant float-right mt-3">
-              <b>Contributor : </b>
-              <br />
-              <b-avatar src="https://placekitten.com/300/300"></b-avatar>
-              <b-avatar src="https://placekitten.com/300/300"></b-avatar>
-              <b-avatar src="https://placekitten.com/300/300"></b-avatar>
-            </div>
             <div class="btn-group mt-5">
               <b-button variant="outline-primary" size="sm" v-b-modal.modal-1
                 >Add New Todo <span class="fa fa-plus"></span
-              ></b-button>
-              <b-button variant="outline-dark" size="sm"
-                >Add New Contributor <span class="fa fa-user"></span
               ></b-button>
             </div>
           </b-card>

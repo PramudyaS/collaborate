@@ -73,7 +73,7 @@ export default {
         created_at: null,
         date_start: null,
         date_end: null
-      }
+      },
     };
   },
   computed: {
@@ -105,7 +105,7 @@ export default {
       return ProjectService.find(this.$route.params.id)
         .then(response => {
           this.project = response.data.project;
-          console.log(this.project);
+          console.log(response);
         })
         .catch(error => {
           console.log(error);
