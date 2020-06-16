@@ -13,5 +13,9 @@ export default {
 
   update(id, payload, headers) {
     return Axios.post(`${END_POINT}/${id}`, payload, headers);
+  },
+
+  delete(id) {
+    return Axios.delete(`${END_POINT}/${id}`);
   }
 };

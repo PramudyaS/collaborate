@@ -5,9 +5,20 @@
         <b-card
           :bg-variant="cardColor(todo.status)"
           text-variant="white"
-          :title="todo.name"
           class="mt-3"
         >
+          <b-card-title>
+            <b-row>
+              <b-col md="7">
+                {{ todo.name }}
+              </b-col>
+              <b-col offset-md="2">
+                <b-button @click="deleteTodo(todo.id, index)"
+                  ><span class="fa fa-window-close close"></span
+                ></b-button>
+              </b-col>
+            </b-row>
+          </b-card-title>
           <b-card-text>
             {{ todo.description }}
           </b-card-text>
@@ -105,6 +116,44 @@ export default {
         variant: "success",
         solid: true
       });
+    },
+
+    deleteTodo(id, index) {
+      this.$bvModal
+        .msgBoxConfirm("Please confirm that you want to delete this task.", {
+          title: "Please Confirm",
+          size: "sm",
+          buttonSize: "sm",
+          okVariant: "danger",
+          okTitle: "YES",
+          cancelTitle: "NO",
+          footerClass: "p-2",
+          hideHeaderClose: false,
+          centered: true
+        })
+        .then(async response => {
+          if (response) {
+            await TodoService.delete(id)
+              .then(() => {
+                this.removeTodo(index);
+                this.$bvToast.toast("Success Delete Todo", {
+                  title: "Success",
+                  variant: "success",
+                  solid: true
+                });
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    removeTodo(index) {
+      this.$delete(this.todos, index);
     }
   },
   mounted: function() {
@@ -112,3 +161,16 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.close {
+  color: white;
+}
+
+.close:hover {
+  text-shadow: 1px 1px 1px #ccc;
+  font-size: 24px;
+  cursor: pointer;
+  color: #dc3545;
+}
+</style>
