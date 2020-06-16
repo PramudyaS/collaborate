@@ -3,7 +3,7 @@
     <div class="header">
       <b-row>
         <b-col md="12">
-          <h3>{{ project.name }}</h3>
+          <h3>Detail Project {{ project.name }}</h3>
         </b-col>
         <b-col md="12">
           <b-card :title="titleProject" :sub-title="creatorProject">

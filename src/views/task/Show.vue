@@ -3,7 +3,7 @@
     <div class="header">
       <b-row>
         <b-col md="12">
-          <h3>{{ task.name }}</h3>
+          <h3>Detail Task {{ task.name }}</h3>
         </b-col>
         <b-col md="12">
           <b-card>
